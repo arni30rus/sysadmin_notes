@@ -295,17 +295,17 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
               Padding(
                 padding: EdgeInsets.only(right: _isEditing ? 90 : 0),
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 3),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E1E1E), // Темный фон
+                    color: const Color(0xFF353535), // Темный фон
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TextField(
                     controller: TextEditingController(text: block.content),
                     readOnly: !_isEditing,
                     maxLines: null,
-                    style: const TextStyle(color: Color(0xFF00FF00), fontFamily: 'RobotoMono', fontSize: 14),
+                    style: const TextStyle(color: Color(0xFF7CD17C), fontFamily: 'RobotoMono', fontSize: 14),
                     onChanged: (val) => block.content = val,
                     decoration: const InputDecoration(border: InputBorder.none, hintText: 'Код...', hintStyle: TextStyle(color: Colors.grey)),
                   ),

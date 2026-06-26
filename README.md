@@ -18,4 +18,4 @@
 - Выполните flutter pub get.
 - Запустите flutter build windows или flutter build apk
 
-Если хотите сделать установщик exe, то установите ПО Inner Setup Compiler и запустите файл installer.iss в папке проекта. Готовый exe файл будет лежать в папке проекта в подпапке InstallerOutput.
+Если хотите сделать установщик exe, то установите ПО Inner Setup Compiler и запустите файл installer.iss в папке проекта. Готовый exe файл будет лежать в папке проекта в подпапке InstallerOutput.пше
