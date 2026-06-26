@@ -24,12 +24,12 @@ class DatabaseHelper {
     databaseFactory = databaseFactoryFfi;
 
     // Получаем путь к директории приложения
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final String dbPath = join(appDir.path, 'tech_notes.db');
+    final Directory appDir = await getApplicationSupportDirectory();
+    final String dbPath = join(appDir.path, 'sysadmin_notes.db');
 
     return await openDatabase(
       dbPath,
-      version: 2,
+      version: 1,
       onCreate: _onCreate,
     );
   }

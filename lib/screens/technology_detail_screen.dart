@@ -93,7 +93,7 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
       final String? sourcePath = file.path;
       if (sourcePath == null) return;
 
-      final dir = await getApplicationDocumentsDirectory();
+      final dir = await getApplicationSupportDirectory();
       final extension = p.extension(sourcePath);
       final String newFileName = '${const Uuid().v4()}$extension';
       final String destPath = p.join(dir.path, 'tech_images', newFileName);
