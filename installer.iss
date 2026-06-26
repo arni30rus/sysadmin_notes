@@ -1,10 +1,10 @@
 ; Скрипт для Inno Setup
 [Setup]
-AppName=SysAdm Notes
+AppName=SysAdmin Notes
 AppVersion=1.0.0
 AppPublisher=arni30rus
-DefaultDirName={autopf}\SysAdm Notes
-DefaultGroupName=SysAdm Notes
+DefaultDirName={autopf}\SysAdmin Notes
+DefaultGroupName=SysAdmin Notes
 UninstallDisplayIcon={app}\sysadmin_notes.exe
 OutputDir=installer_output
 OutputBaseFilename=SysAdmNotes_Setup_v1.0
