@@ -1,45 +1,38 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+# Служебные папки Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+.dart_fvm/
 
-# IntelliJ related
+# Игнорируем локальную базу данных и сгенерированные иконки
+*.db
+*.db-journal
+android/app/src/main/res/mipmap-*/
+ios/Runner/Assets.xcassets/AppIcon.appiconset/
+
+# Файлы IDE (VS Code, Android Studio)
+.vscode/
+.idea/
 *.iml
 *.ipr
 *.iws
-.idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# macOS
+.DS_Store
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
+# Секретные ключи (если появятся позже)
+*.keystore
+*.jks
+key.properties
 
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Игнорируем неиспользуемые платформы и служебные папки
+ios/
+linux/
+macos/
+web/
+.vscode/
+installer_output/
