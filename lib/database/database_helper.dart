@@ -62,6 +62,7 @@ class DatabaseHelper {
         technology_id TEXT NOT NULL,
         type TEXT NOT NULL, -- 'text', 'code', 'image'
         content TEXT NOT NULL, -- Текст, код или путь к файлу
+        plain_text TEXT NOT NULL DEFAULT '',
         order_num INTEGER NOT NULL,
         FOREIGN KEY (technology_id) REFERENCES technologies (id) ON DELETE CASCADE
       )

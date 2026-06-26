@@ -337,6 +337,7 @@ class ImportExportService {
                 'technology_id': localTechId,
                 'type': blockType,
                 'content': content,
+                'plain_text': bMap['plain_text'] ?? '',
                 'order_num': bMap['order_num'] ?? 0,
               });
             }

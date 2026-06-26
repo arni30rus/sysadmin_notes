@@ -119,11 +119,12 @@ class AppImage {
 
 }
 
-  class Block {
+ class Block {
   final String id;
   final String technologyId;
-  final String type; // 'text', 'code', 'image'
+  final String type;
   String content;
+  String plainText; // НОВОЕ ПОЛЕ
   int orderNum;
 
   Block({
@@ -131,6 +132,7 @@ class AppImage {
     required this.technologyId,
     required this.type,
     required this.content,
+    required this.plainText,
     required this.orderNum,
   });
 
@@ -139,6 +141,7 @@ class AppImage {
         'technology_id': technologyId,
         'type': type,
         'content': content,
+        'plain_text': plainText, // НОВОЕ ПОЛЕ
         'order_num': orderNum,
       };
 
@@ -147,6 +150,7 @@ class AppImage {
         technologyId: map['technology_id'] as String,
         type: map['type'] as String,
         content: map['content'] as String? ?? '',
+        plainText: map['plain_text'] as String? ?? '',
         orderNum: map['order_num'] as int? ?? 0,
       );
 }

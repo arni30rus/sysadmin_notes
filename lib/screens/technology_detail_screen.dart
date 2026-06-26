@@ -8,6 +8,9 @@ import '../models/models.dart';
 import '../services/database_service.dart';
 import '../services/import_export_service.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'markdown_help_screen.dart';
+
 
 class TechnologyDetailScreen extends StatefulWidget {
   final Technology technology;
@@ -77,6 +80,7 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
       technologyId: _currentTech.id,
       type: type,
       content: '',
+      plainText: '',
       orderNum: _blocks.length,
     );
     await _dbService.insertBlock(newBlock);
@@ -110,6 +114,7 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
         technologyId: _currentTech.id,
         type: 'image',
         content: destPath,
+        plainText: '',
         orderNum: _blocks.length,
       );
       await _dbService.insertBlock(newBlock);
@@ -189,6 +194,17 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
                   SnackBar(content: Text(success ? 'Карточка выгружена' : 'Отменено')),
                 );
               }
+            },
+          ),
+          // НОВАЯ КНОПКА СПРАВКИ
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: 'Справка по Markdown',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MarkdownHelpScreen()),
+              );
             },
           ),
           if (_isEditing)
@@ -274,19 +290,28 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
     return Stack(
       children: [
         // Сам блок
-                if (block.type == 'text')
+          if (block.type == 'text')
           Padding(
-            padding: EdgeInsets.only(right: _isEditing ? 90 : 0), // Отступ для панели кнопок
-            child: TextField(
-              controller: TextEditingController(text: block.content),
-              readOnly: !_isEditing,
-              maxLines: null,
-              onChanged: (val) => block.content = val,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Введите текст...',
-              ),
-            ),
+            padding: EdgeInsets.only(right: _isEditing ? 90 : 0),
+            child: _isEditing
+                ? TextField(
+                    controller: TextEditingController(text: block.content),
+                    maxLines: null,
+                    onChanged: (val) {
+                      block.content = val;
+                      block.plainText = val; // Для поиска сохраняем чистый текст
+                    },
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Введите текст (поддерживается Markdown: **жирный**, _курсив_)',
+                    ),
+                  )
+                : MarkdownBody(
+                    data: block.content.isEmpty ? '*Пустой текстовый блок*' : block.content,
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                      p: const TextStyle(fontSize: 16, height: 1.4),
+                    ),
+                  ),
           )
                   else if (block.type == 'code')
           // Добавляем Stack для возможности разместить кнопку поверх кода

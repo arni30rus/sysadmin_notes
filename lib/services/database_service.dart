@@ -67,71 +67,64 @@ Future<Database> get database => _dbHelper.database;
     await db.delete('technologies', where: 'id = ?', whereArgs: [id]);
   }
 
+  // НОВЫЙ ПОИСКОВЫЙ ЗАПРОС (ищет в названиях технологий и внутри блоков)
   Future<List<SearchResult>> searchAll(String query) async {
-  if (query.trim().isEmpty) return [];
-  
-  final db = await _dbHelper.database;
-  final String q = '%${query.toLowerCase()}%';
-  List<SearchResult> results = [];
+    if (query.trim().isEmpty) return [];
+    final db = await _dbHelper.database;
+    final String q = '%${query.toLowerCase()}%';
+    List<SearchResult> results = [];
 
-  // 1. Поиск по Вендорам
-  final vendorMaps = await db.query(
-    'vendors',
-    where: 'LOWER(name) LIKE ?',
-    whereArgs: [q],
-  );
-  for (var map in vendorMaps) {
-    results.add(SearchResult(
-      vendorId: map['id'] as String,
-      vendorName: map['name'] as String,
-      matchedText: map['name'] as String,
-      type: 'vendor',
-    ));
-  }
+    // 1. Поиск по Вендорам
+    final vendorMaps = await db.query('vendors', where: 'LOWER(name) LIKE ?', whereArgs: [q]);
+    for (var map in vendorMaps) {
+      results.add(SearchResult(
+        vendorId: map['id'] as String,
+        vendorName: map['name'] as String,
+        matchedText: map['name'] as String,
+        type: 'vendor',
+      ));
+    }
 
-  // 2. Поиск по Технологиям (Название и Описание)
-  final techMaps = await db.query(
-    'technologies',
-    where: 'LOWER(title) LIKE ? OR LOWER(description) LIKE ?',
-    whereArgs: [q, q],
-  );
-  
-  // Чтобы получить имя вендора для результата, предварительно загрузим их
-  final vendors = await db.query('vendors');
-  final vendorMap = {for (var v in vendors) v['id'] as String: v['name'] as String};
+    // 2. Поиск по Названиям Технологий
+    final techMaps = await db.query('technologies', where: 'LOWER(title) LIKE ?', whereArgs: [q]);
+    final vendors = await db.query('vendors');
+    final vendorMap = {for (var v in vendors) v['id'] as String: v['name'] as String};
 
-  for (var map in techMaps) {
-    final vId = map['vendor_id'] as String;
-    final vName = vendorMap[vId] ?? 'Неизвестно';
-    final title = map['title'] as String;
-    final desc = map['description'] as String;
-    
-    // Проверяем, где именно совпадение, чтобы подсветить нужный кусок
-    if (title.toLowerCase().contains(query.toLowerCase())) {
+    for (var map in techMaps) {
+      final vId = map['vendor_id'] as String;
+      final vName = vendorMap[vId] ?? 'Неизвестно';
       results.add(SearchResult(
         vendorId: vId,
         vendorName: vName,
         technologyId: map['id'] as String,
-        technologyTitle: title,
-        matchedText: title,
+        technologyTitle: map['title'] as String,
+        matchedText: map['title'] as String,
         type: 'tech_title',
       ));
     }
-    
-    if (desc.toLowerCase().contains(query.toLowerCase())) {
+
+    // 3. Поиск внутри Блоков (по полю plain_text)
+    final blockMaps = await db.rawQuery('''
+      SELECT b.plain_text as matched_text, t.id as tech_id, t.title as tech_title, v.id as vendor_id, v.name as vendor_name
+      FROM blocks b
+      JOIN technologies t ON b.technology_id = t.id
+      JOIN vendors v ON t.vendor_id = v.id
+      WHERE LOWER(b.plain_text) LIKE ?
+    ''', [q]);
+
+    for (var map in blockMaps) {
       results.add(SearchResult(
-        vendorId: vId,
-        vendorName: vName,
-        technologyId: map['id'] as String,
-        technologyTitle: title,
-        matchedText: desc,
+        vendorId: map['vendor_id'] as String,
+        vendorName: map['vendor_name'] as String,
+        technologyId: map['tech_id'] as String,
+        technologyTitle: map['tech_title'] as String,
+        matchedText: map['matched_text'] as String,
         type: 'tech_desc',
       ));
     }
-  }
 
-  return results;
-}
+    return results;
+  }
 
   // --- Images ---
   Future<List<AppImage>> getImages(String technologyId) async {
