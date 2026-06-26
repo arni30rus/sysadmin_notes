@@ -107,12 +107,12 @@ class _TechnologiesScreenState extends State<TechnologiesScreen> {
 
           final techs = snapshot.data!;
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             itemCount: techs.length,
                         itemBuilder: (context, index) {
               final tech = techs[index];
               return Card(
-                margin: const EdgeInsets.only(bottom: 12),
+                margin: const EdgeInsets.only(bottom: 4),
                 child: ListTile(
                   title: Text(tech.title, style: const TextStyle(fontWeight: FontWeight.w600)),
                     trailing: PopupMenuButton<String>(

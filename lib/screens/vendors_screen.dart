@@ -5,6 +5,7 @@ import 'technologies_screen.dart';
 import 'search_screen.dart';
 import '../services/import_export_service.dart';
 import 'about_screen.dart';
+import '../widgets/confirm_delete_dialog.dart';
 
 class VendorsScreen extends StatefulWidget {
   const VendorsScreen({super.key});
@@ -99,24 +100,20 @@ class _VendorsScreenState extends State<VendorsScreen> {
                 );
                 _refreshVendors();
               } else if (value == 'clear') {
+                // Используем наш новый виджет
                 final confirm = await showDialog<bool>(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Внимание!'),
-                    content: const Text('Вы уверены, что хотите удалить ВСЕ данные? Это действие необратимо.'),
-                    actions: [
-                      TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Отмена')),
-                      TextButton(
-                        style: TextButton.styleFrom(foregroundColor: Colors.red),
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('Удалить всё'),
-                      ),
-                    ],
+                  builder: (context) => const ConfirmDeleteDialog(
+                    itemName: 'все данные',
                   ),
                 );
                 if (confirm == true) {
                   await _dbService.clearDatabase();
                   _refreshVendors();
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('База данных очищена')),
+                  );
                 }
               } else if (value == 'about') {
                 Navigator.push(
@@ -154,12 +151,12 @@ class _VendorsScreenState extends State<VendorsScreen> {
 
           final vendors = snapshot.data!;
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             itemCount: vendors.length,
             itemBuilder: (context, index) {
               final vendor = vendors[index];
               return Card(
-                margin: const EdgeInsets.only(bottom: 12),
+                margin: const EdgeInsets.only(bottom: 4),
                 child: ListTile(
                   title: Text(vendor.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                   trailing: PopupMenuButton<String>(

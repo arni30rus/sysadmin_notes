@@ -217,7 +217,7 @@ class ImportExportService {
         
         jsonData = jsonDecode(utf8.decode(jsonFile.content as List<int>));
 
-        final dir = await getApplicationDocumentsDirectory();
+        final dir = await getApplicationSupportDirectory();
         final imgDir = Directory(p.join(dir.path, 'tech_images'));
         if (!await imgDir.exists()) {
           await imgDir.create(recursive: true);
