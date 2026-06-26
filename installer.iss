@@ -7,13 +7,13 @@ DefaultDirName={autopf}\SysAdm Notes
 DefaultGroupName=SysAdm Notes
 UninstallDisplayIcon={app}\sysadmin_notes.exe
 OutputDir=installer_output
-OutputBaseFilename=SysAdmNotes_Setup_v1.0.0
+OutputBaseFilename=SysAdmNotes_Setup_v1.0
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
-SetupIconFile=assets\logo.ico
+SetupIconFile=windows\runner\resources\app_icon.ico
 
 [Files]
 ; Берем все файлы из папки Release
