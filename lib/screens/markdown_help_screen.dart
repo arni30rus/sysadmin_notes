@@ -45,6 +45,7 @@ class MarkdownHelpScreen extends StatelessWidget {
       ),
       body: Markdown(
         data: markdownData,
+        softLineBreak: true,
         padding: const EdgeInsets.all(16),
         styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
           codeblockDecoration: BoxDecoration(

@@ -308,6 +308,7 @@ class _TechnologyDetailScreenState extends State<TechnologyDetailScreen> {
                   )
                 : MarkdownBody(
                     data: block.content.isEmpty ? '*Пустой текстовый блок*' : block.content,
+                    softLineBreak: true,
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
                       p: const TextStyle(fontSize: 16, height: 1.4),
                     ),
